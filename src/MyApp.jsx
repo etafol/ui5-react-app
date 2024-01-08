@@ -1,9 +1,29 @@
 import { useState } from "react";
-import { Card, CardHeader, Icon, Text } from "@ui5/webcomponents-react";
-import { spacing } from "@ui5/webcomponents-react-base";
+import {
+  Avatar,
+  Card,
+  CardHeader,
+  Text,
+  ShellBar,
+  ShellBarItem,
+  List,
+  StandardListItem,
+  CustomListItem,
+  ValueState,
+  ProgressIndicator,
+  FlexBox,
+  FlexBoxJustifyContent,
+  FlexBoxWrap,
+  FlexBoxDirection,
+  AnalyticalTable,
+  Icon,
+} from "@ui5/webcomponents-react";
+import { spacing, ThemingParameters } from "@ui5/webcomponents-react-base";
 import { BarChart, LineChart } from "@ui5/webcomponents-react-charts";
-import lineChartIcon from "@ui5/webcomponents-icons/dist/line-chart.js";
-import barChartIcon from "@ui5/webcomponents-icons/dist/horizontal-bar-chart.js";
+import lineChartIcon from "@ui5/webcomponents-icons/dist/line-chart";
+import barChartIcon from "@ui5/webcomponents-icons/dist/horizontal-bar-chart";
+import addIcon from "@ui5/webcomponents-icons/dist/add";
+import listIcon from "@ui5/webcomponents-icons/dist/list";
 
 const dataset = [
   {
@@ -64,6 +84,17 @@ export function MyApp() {
 
   return (
     <div>
+      <ShellBar
+        logo={<img src="reactLogo.png" alt="Logo" />}
+        profile={
+          <Avatar>
+            <img src="profilePictureExample.png" alt="Profile" />
+          </Avatar>
+        }
+        primaryTitle="My App"
+      >
+        <ShellBarItem icon={addIcon} text="Add" />
+      </ShellBar>
       <Card
         header={
           <CardHeader
@@ -99,6 +130,74 @@ export function MyApp() {
             loading={loading}
           />
         )}
+      </Card>
+      <Card
+        header={
+          <CardHeader
+            titleText="Progress"
+            subtitleText="List"
+            avatar={<Icon name={listIcon} />}
+          />
+        }
+        style={{ width: "300px" }}
+      >
+        <List>
+          <StandardListItem
+            additionalText="finished"
+            additionalTextState={ValueState.Success}
+          >
+            Activity 1
+          </StandardListItem>
+          <StandardListItem
+            additionalText="failed"
+            additionalTextState={ValueState.Error}
+          >
+            Activity 2
+          </StandardListItem>
+          <CustomListItem>
+            <FlexBox
+              direction={FlexBoxDirection.Column}
+              style={{ width: "100%", ...spacing.sapUiContentPadding }}
+            >
+              <FlexBox justifyContent={FlexBoxJustifyContent.SpaceBetween}>
+                <Text style={{ fontSize: ThemingParameters.sapFontLargeSize }}>
+                  Activity 3
+                </Text>
+                <Text style={{ color: ThemingParameters.sapCriticalTextColor }}>
+                  in progress
+                </Text>
+              </FlexBox>
+              <ProgressIndicator
+                value={89}
+                valueState={ValueState.Success}
+                style={{ ...spacing.sapUiTinyMarginTop }}
+              />
+            </FlexBox>
+          </CustomListItem>
+          <CustomListItem>
+            <FlexBox
+              direction={FlexBoxDirection.Column}
+              style={{ width: "100%", ...spacing.sapUiContentPadding }}
+            >
+              <FlexBox justifyContent={FlexBoxJustifyContent.SpaceBetween}>
+                <Text style={{ fontSize: ThemingParameters.sapFontLargeSize }}>
+                  Activity 4
+                </Text>
+                <Text style={{ color: ThemingParameters.sapCriticalTextColor }}>
+                  in progress
+                </Text>
+              </FlexBox>
+              <ProgressIndicator
+                value={5}
+                valueState={ValueState.Error}
+                style={{ ...spacing.sapUiTinyMarginTop }}
+              />
+            </FlexBox>
+          </CustomListItem>
+          {/* <CustomListItem>
+            <ProgressIndicator value={5} valueState={ValueState.Error} />
+          </CustomListItem> */}
+        </List>
       </Card>
     </div>
   );
