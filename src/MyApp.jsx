@@ -24,6 +24,7 @@ import lineChartIcon from "@ui5/webcomponents-icons/dist/line-chart";
 import barChartIcon from "@ui5/webcomponents-icons/dist/horizontal-bar-chart";
 import addIcon from "@ui5/webcomponents-icons/dist/add";
 import listIcon from "@ui5/webcomponents-icons/dist/list";
+import tableViewIcon from "@ui5/webcomponents-icons/dist/table-view";
 
 const dataset = [
   {
@@ -53,6 +54,38 @@ const dataset = [
   {
     month: "July",
     data: 40,
+  },
+];
+
+const tableData = new Array(500).fill(null).map((_, index) => {
+  const min = 18;
+  const max = 100;
+  return {
+    name: `name${index}`,
+    age: Math.floor(Math.random() * (max - min + 1) + min), //Math.floor(Math.random() * 100),
+    friend: {
+      name: `friend.Name${index}`,
+      age: Math.floor(Math.random() * (max - min + 1) + min), //Math.floor(Math.random(100) * 100),
+    },
+  };
+});
+
+const tableColumns = [
+  {
+    Header: "Name",
+    accessor: "name", // String-based value accessors!
+  },
+  {
+    Header: "Age",
+    accessor: "age",
+  },
+  {
+    Header: "Friend Name",
+    accessor: "friend.name",
+  },
+  {
+    Header: "Friend Age",
+    accessor: "friend.age",
   },
 ];
 
@@ -95,110 +128,139 @@ export function MyApp() {
       >
         <ShellBarItem icon={addIcon} text="Add" />
       </ShellBar>
-      <Card
-        header={
-          <CardHeader
-            titleText="Stock Prices"
-            subtitleText={`Click here to switch to ${switchToChart}`}
-            interactive
-            onClick={handleHeaderClick}
-            avatar={
-              <Icon
-                name={
-                  toggleCharts === "lineChart" ? lineChartIcon : barChartIcon
-                }
-              />
-            }
-          />
-        }
-        style={{ width: "300px" }}
+      <FlexBox
+        justifyContent={FlexBoxJustifyContent.Center}
+        wrap={FlexBoxWrap.Wrap}
+        style={spacing.sapUiContentPadding}
       >
-        <Text style={spacing.sapUiContentPadding}>{contentTitle}</Text>
-        {toggleCharts === "lineChart" ? (
-          <LineChart
-            measures={[{ accessor: "data", label: "Stock Price" }]}
-            dimensions={[{ accessor: "month" }]}
-            dataset={dataset}
-            loading={loading}
-          />
-        ) : (
-          <BarChart
-            dir="vertical"
-            measures={[{ accessor: "data", label: "Stock Price" }]}
-            dimensions={[{ accessor: "month" }]}
-            dataset={dataset}
-            loading={loading}
-          />
-        )}
-      </Card>
-      <Card
-        header={
-          <CardHeader
-            titleText="Progress"
-            subtitleText="List"
-            avatar={<Icon name={listIcon} />}
-          />
-        }
-        style={{ width: "300px" }}
-      >
-        <List>
-          <StandardListItem
-            additionalText="finished"
-            additionalTextState={ValueState.Success}
-          >
-            Activity 1
-          </StandardListItem>
-          <StandardListItem
-            additionalText="failed"
-            additionalTextState={ValueState.Error}
-          >
-            Activity 2
-          </StandardListItem>
-          <CustomListItem>
-            <FlexBox
-              direction={FlexBoxDirection.Column}
-              style={{ width: "100%", ...spacing.sapUiContentPadding }}
+        <Card
+          header={
+            <CardHeader
+              titleText="Stock Prices"
+              subtitleText={`Click here to switch to ${switchToChart}`}
+              interactive
+              onClick={handleHeaderClick}
+              avatar={
+                <Icon
+                  name={
+                    toggleCharts === "lineChart" ? lineChartIcon : barChartIcon
+                  }
+                />
+              }
+            />
+          }
+          style={{ width: "300px", ...spacing.sapUiContentPadding }}
+        >
+          <Text style={spacing.sapUiContentPadding}>{contentTitle}</Text>
+          {toggleCharts === "lineChart" ? (
+            <LineChart
+              measures={[{ accessor: "data", label: "Stock Price" }]}
+              dimensions={[{ accessor: "month" }]}
+              dataset={dataset}
+              loading={loading}
+            />
+          ) : (
+            <BarChart
+              dir="vertical"
+              measures={[{ accessor: "data", label: "Stock Price" }]}
+              dimensions={[{ accessor: "month" }]}
+              dataset={dataset}
+              loading={loading}
+            />
+          )}
+        </Card>
+        <Card
+          header={
+            <CardHeader
+              titleText="Progress"
+              subtitleText="List"
+              avatar={<Icon name={listIcon} />}
+            />
+          }
+          style={{ width: "300px", ...spacing.sapUiContentPadding }}
+        >
+          <List>
+            <StandardListItem
+              additionalText="finished"
+              additionalTextState={ValueState.Success}
             >
-              <FlexBox justifyContent={FlexBoxJustifyContent.SpaceBetween}>
-                <Text style={{ fontSize: ThemingParameters.sapFontLargeSize }}>
-                  Activity 3
-                </Text>
-                <Text style={{ color: ThemingParameters.sapCriticalTextColor }}>
-                  in progress
-                </Text>
-              </FlexBox>
-              <ProgressIndicator
-                value={89}
-                valueState={ValueState.Success}
-                style={{ ...spacing.sapUiTinyMarginTop }}
-              />
-            </FlexBox>
-          </CustomListItem>
-          <CustomListItem>
-            <FlexBox
-              direction={FlexBoxDirection.Column}
-              style={{ width: "100%", ...spacing.sapUiContentPadding }}
+              Activity 1
+            </StandardListItem>
+            <StandardListItem
+              additionalText="failed"
+              additionalTextState={ValueState.Error}
             >
-              <FlexBox justifyContent={FlexBoxJustifyContent.SpaceBetween}>
-                <Text style={{ fontSize: ThemingParameters.sapFontLargeSize }}>
-                  Activity 4
-                </Text>
-                <Text style={{ color: ThemingParameters.sapCriticalTextColor }}>
-                  in progress
-                </Text>
+              Activity 2
+            </StandardListItem>
+            <CustomListItem>
+              <FlexBox
+                direction={FlexBoxDirection.Column}
+                style={{ width: "100%", ...spacing.sapUiContentPadding }}
+              >
+                <FlexBox justifyContent={FlexBoxJustifyContent.SpaceBetween}>
+                  <Text
+                    style={{ fontSize: ThemingParameters.sapFontLargeSize }}
+                  >
+                    Activity 3
+                  </Text>
+                  <Text
+                    style={{ color: ThemingParameters.sapCriticalTextColor }}
+                  >
+                    in progress
+                  </Text>
+                </FlexBox>
+                <ProgressIndicator
+                  value={89}
+                  valueState={ValueState.Success}
+                  style={{ ...spacing.sapUiTinyMarginTop }}
+                />
               </FlexBox>
-              <ProgressIndicator
-                value={5}
-                valueState={ValueState.Error}
-                style={{ ...spacing.sapUiTinyMarginTop }}
-              />
-            </FlexBox>
-          </CustomListItem>
-          {/* <CustomListItem>
+            </CustomListItem>
+            <CustomListItem>
+              <FlexBox
+                direction={FlexBoxDirection.Column}
+                style={{ width: "100%", ...spacing.sapUiContentPadding }}
+              >
+                <FlexBox justifyContent={FlexBoxJustifyContent.SpaceBetween}>
+                  <Text
+                    style={{ fontSize: ThemingParameters.sapFontLargeSize }}
+                  >
+                    Activity 4
+                  </Text>
+                  <Text
+                    style={{ color: ThemingParameters.sapCriticalTextColor }}
+                  >
+                    in progress
+                  </Text>
+                </FlexBox>
+                <ProgressIndicator
+                  value={5}
+                  valueState={ValueState.Error}
+                  style={{ ...spacing.sapUiTinyMarginTop }}
+                />
+              </FlexBox>
+            </CustomListItem>
+            {/* <CustomListItem>
             <ProgressIndicator value={5} valueState={ValueState.Error} />
           </CustomListItem> */}
-        </List>
-      </Card>
+          </List>
+        </Card>
+        <Card
+          header={
+            <CardHeader
+              titleText="AnalyticalTable"
+              avatar={<Icon name={tableViewIcon} />}
+            />
+          }
+          style={{ maxWidth: "900px", ...spacing.sapUiContentPadding }}
+        >
+          <AnalyticalTable
+            data={tableData}
+            columns={tableColumns}
+            visibleRows={5}
+          />
+        </Card>
+      </FlexBox>
     </div>
   );
 }
